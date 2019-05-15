@@ -1,0 +1,152 @@
+
+# It is important that this file is edited as UTF-8.
+# The following line should contain a sharp s:
+# ß
+# If the above line is not correctly displayed, fix your editor first!
+
+
+py3status {
+    nagbar_font    = 'FontAwesome'
+    color          = "#FFFFFF"
+    color_good     = "#2ecc71"
+    color_degraded = "#f1c40f"
+    color_bad      = "#e74c3c"
+    color_on       = good
+    color_off      = bad
+    color_icon     = "#FFF000"
+}
+
+
+# 网络
+net_rate {
+    all_interfaces = true
+    cache_timeout = .5
+    interfaces = "enp0s25"
+    prefix_icon_up    = " "
+    prefix_icon_down  = " "
+    format_value = "[\?color= {value:4.1f}]{unit:5s}"
+    format = "[\?color=icon {prefix_icon_up}]{up} [\?color=icon {prefix_icon_down}]{down}"
+    format_no_connection = "无网络"
+}
+online_status {
+    cache_timeout = .5
+    prefix_icon  = ""
+    format   = "[\?color=icon {prefix_icon}]  {icon}"
+    icon_on  = ""
+    icon_off = ""
+    url      = "https://www.163.com"
+    timeout  = 2R
+}
+# 系统信息
+loadavg {
+    cache_timeout = 60
+    prefix_icon = "Avg"
+    format = "[\?color=icon {prefix_icon}] {1avg} {5avg} {15avg}"
+    thresholds = [(0, '#9dd7fb'), (20,'‘good’'), (40, 'degraded'), (60, '#ffa500'), (80, 'bad')]
+}
+sysdata load {
+    cache_timeout = 60
+    prefix_icon = "Load"
+    format = "[\?color=icon {prefix_icon}] {load1} {load5} {load15}"
+}
+sysdata cpu{
+    cache_timeout = .5
+    prefix_icon = "Cpu"
+    prefix_icon_temp = ""
+    format = "[\?color=icon {prefix_icon}] {cpu_used_percent:4.1f}% [\?color=icon {prefix_icon_temp}] {cpu_temp:2.0f}℃"
+}
+sysdata mem{
+    cache_timeout = 1
+    prefix_icon = "Mem"
+    format = "[\?color=icon {prefix_icon}] {mem_used_percent:4.1f}%"
+}
+sysdata mem_detail{
+    cache_timeout = 1
+    prefix_icon = "Mem"
+    format = "[\?color=icon {prefix_icon}] {mem_used}/{mem_total}{mem_total_unit}({mem_used_percent:.1f}%)"
+    color_mem = "#52D017"
+}
+# 磁盘数据 # ⛁
+diskdata io {
+    disk = "sdb4"
+    cache_timeout = .5
+    format_rate  = "{value:5.1f}{unit:5s}"
+    prefix_icon = ""
+    format = "[\?color=icon {prefix_icon}] R:{read} W:{write}"
+}
+diskdata root {
+    disk = "sdb4"
+    cache_timeout = .5
+    format_space = "[\?min_length=4 {value:.1f}]"
+    format_rate  = "[\?min_length=5 {value:.1f}]{unit:5s}"
+    prefix_icon = " /"
+    format = "[\?color=icon {prefix_icon}] {used}/{total_space}GB({used_percent}%) 读:{read}写:{write}"
+}
+# 亮度
+backlight {
+    device = "intel_backlight"
+    cache_timeout = .2
+    brightness_delta   = 10
+    prefix_icon = ""
+    format = "[\?color=icon {prefix_icon}] {level}%"
+    low_tune_threshold = 20
+}
+# 声音
+volume_status {
+    card = 1
+    cache_timeout = .2
+    volume_delta = 1
+    prefix_icon       = ""
+    prefix_icon_muted = "  "
+    format       = "[\?color=icon {prefix_icon}] {percentage}%"
+    format_muted = "[\?color=bad {prefix_icon_muted}] {percentage}%"
+    thresholds = [(0, 'degraded'), (20, 'good'), (60, 'bad')]
+}
+# 电量
+battery_level{
+    battery_id = 0
+    cache_timeout = 1
+    blocks = ""
+    format = "[\?color=icon {icon}] {percent}%"
+    charging_character = ""
+    threshold_bad      = 15
+    threshold_degraded = 30
+    threshold_full     = 95
+    color_charging = "#9b59b6"
+}
+
+# 运行atom
+static_string 'atom' {
+    format = "atom"
+    position = 'center'
+    on_click 1 = "exec --no-startup-id notify-send '正在打开atom';exec --no-startup-id /opt/atom/atom"
+}
+# 运行idea
+static_string 'idea' {
+    format = ""
+    position = 'center'
+    on_click 1 = "exec --no-startup-id notify-send '正在打开idea';exec --no-startup-id /opt/idea/bin/idea.sh"
+}
+# 运行截图
+static_string 'scrot' {
+    format = ""
+    position = 'center'
+    on_click 1 = "exec --no-startup-id i3-scrot -d"
+    color = "#C44975"
+}
+
+order += "net_rate"
+order += "diskdata io"
+order += "sysdata cpu"
+order += "sysdata mem"
+# order += "sysdata mem_detail"
+# order += "diskdata root"
+# order += "loadavg"
+# order += "sysdata load"
+# order += "static_string atom"
+# order += "static_string idea"
+# order += "static_string scrot"
+order += "backlight"
+order += "volume_status"
+order += "battery_level"
+order += "online_status"

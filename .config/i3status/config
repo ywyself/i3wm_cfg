@@ -1,0 +1,73 @@
+# i3status configuration file.
+# see "man i3status" for documentation.
+# see https://i3wm.org/i3status/manpage.html#_configuration
+
+# It is important that this file is edited as UTF-8.
+# The following line should contain a sharp s:
+# ß
+# If the above line is not correctly displayed, fix your editor first!
+
+general {
+    separator = " | "
+    interval = 1
+    color_good     = "#2ecc71"
+    color_degraded = "#f1c40f"
+    color_bad      = "#e74c3c"
+}
+
+order += "wireless wlp4s0"
+order += "ethernet enp5s0"
+order += "run_watch VPNC"
+order += "path_exists VPN"
+order += "cpu_usage"
+order += "volume master"
+order += "battery 1"
+order += "tztime local"
+
+wireless wlp4s0 {
+        format_up = "W: (%quality at %essid, %bitrate) %ip"
+        format_down = "W: down"
+}
+ethernet enp5s0 {
+        # if you use %speed, i3status requires the cap_net_admin capability
+        format_up = "E: %ip (%speed)"
+        format_down = "E: down"
+}
+run_watch VPNC {
+        # file containing the PID of a vpnc process
+        pidfile = "/var/run/vpnc/pid"
+}
+path_exists VPN {
+        # path exists when a VPN tunnel launched by nmcli/nm-applet is active
+        path = "/proc/sys/net/ipv4/conf/tun0"
+}
+cpu_usage {
+    format = "CPU:%usage"
+    degraded_threshold = 50
+    format_above_degraded_threshold = "WARN:%usage"
+    max_threshold = 75
+    format_above_threshold = "DANGER:%usage"
+}
+
+volume master {
+        format = "♪: %volume"
+        format_muted = "♪: muted (%volume)"
+        device = "default"
+        mixer = "Master"
+        mixer_idx = 0
+}
+battery 1 {
+        format = "%status %percentage %remaining"
+        format_down = "No battery"
+        status_chr = ""
+        status_bat = ""
+        status_unk = ""
+        status_full = ""
+        path = "/sys/class/power_supply/BAT%d/uevent"
+        low_threshold = 30
+}
+tztime local {
+    # format = "<span foreground='#ffffff'>time:</span> %time"
+    format = "%time"
+    format_time = "%Y-%m-%d %H:%M:%S"
+}
